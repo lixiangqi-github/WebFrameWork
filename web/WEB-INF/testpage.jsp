@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-testpage123123web-inf
+${test}
 </body>
 </html>

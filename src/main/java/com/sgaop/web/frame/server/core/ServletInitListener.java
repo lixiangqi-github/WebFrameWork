@@ -2,6 +2,7 @@ package com.sgaop.web.frame.server.core;
 
 
 import com.sgaop.web.frame.server.scanner.ClassScanner;
+import com.sgaop.web.frame.server.util.ProperScanner;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletContextEvent;
@@ -16,6 +17,8 @@ public class ServletInitListener implements ServletContextListener {
     private static final Logger logger = Logger.getRootLogger();
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        //TODO 启动连接池
+        ProperScanner.init();
         ClassScanner.ScannerAllController();
         logger.info("服务启动");
     }

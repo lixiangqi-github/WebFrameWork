@@ -23,7 +23,7 @@ public class ActionHandler {
         webErrorMessage.setCode(200);
         ActionResult actionResult = new ActionResult();
         try {
-            ActionMethod actionMethod = (ActionMethod) CacheManager.getCache(servletPath);
+            ActionMethod actionMethod = (ActionMethod) CacheManager.getCacheObj(servletPath);
             if (actionMethod != null) {
                 actionResult.setResultType(actionMethod.getOK());
                 if (methodType.equals(actionMethod.getMethod())) {
@@ -81,7 +81,8 @@ public class ActionHandler {
                             actionParamList.add(response);
                         } else {
                             webErrorMessage.setCode(500);
-                            logger.warn("Action的参数,除HttpServletRequest,HttpServletResponse外必须使用注解");
+                            webErrorMessage.setMessage("Action的参数,除HttpServletRequest,HttpServletResponse外必须使用@WebParam注解");
+                            logger.warn(webErrorMessage.getMessage());
                         }
                     }
                     handlerMethod.setAccessible(true);
@@ -95,12 +96,15 @@ public class ActionHandler {
         } catch (Exception e) {
             e.printStackTrace();
             webErrorMessage.setCode(500);
-            webErrorMessage.setMessage(e.getMessage());
+            if (webErrorMessage.getMessage().equals("")) {
+                webErrorMessage.setMessage(" path error " + methodType + ":" + servletPath);
+            }
+            webErrorMessage.setException(e);
+            logger.warn(webErrorMessage.getMessage());
         }
         if (webErrorMessage.getCode() == 404) {
-            logger.warn(" path is not found " + methodType + ":" + servletPath);
-        } else if (webErrorMessage.getCode() == 500) {
-            logger.warn(" path error " + methodType + ":" + servletPath);
+            webErrorMessage.setMessage(" path is not found " + methodType + ":" + servletPath);
+            logger.warn(webErrorMessage.getMessage());
         }
         actionResult.setWebErrorMessage(webErrorMessage);
         return actionResult;

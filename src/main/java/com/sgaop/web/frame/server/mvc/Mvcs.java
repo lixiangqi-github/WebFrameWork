@@ -13,6 +13,7 @@ public class Mvcs {
     private static ThreadLocal<FrameRequest> local = new ThreadLocal();
 
     public static void initLocal(ServletRequest servletRequest, ServletResponse servletResponse) {
+        servletRequest.setAttribute("base",servletRequest.getServletContext().getContextPath());
         local.set(new FrameRequest((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse));
     }
 

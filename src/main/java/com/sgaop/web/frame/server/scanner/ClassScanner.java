@@ -2,6 +2,7 @@ package com.sgaop.web.frame.server.scanner;
 
 
 import com.sgaop.web.frame.server.cache.CacheManager;
+import com.sgaop.web.frame.server.cache.StaticCacheManager;
 import com.sgaop.web.frame.server.mvc.ActionMethod;
 import com.sgaop.web.frame.server.mvc.annotation.*;
 
@@ -14,7 +15,8 @@ import java.util.Set;
 public class ClassScanner {
 
     public static void ScannerAllController() {
-        Set<Class<?>> classes = ClassScannerHelper.getClasses("com.web.action");
+        String baseScannerPackage = StaticCacheManager.getCache("baseScannerPackage").toString();
+        Set<Class<?>> classes = ClassScannerHelper.getClasses(baseScannerPackage);
         for (Class<?> ks : classes) {
             String classKey = ks.getName();
             WebController webController = ks.getAnnotation(WebController.class);

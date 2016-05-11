@@ -4,6 +4,7 @@ import com.sgaop.web.frame.server.mvc.annotation.*;
 import com.web.action.pojo.AjaxRsult;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 
 
 /**
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MainController {
 
 
-//    @OK("json")
+    //    @OK("json")
     @OK("jsp:testpage.jsp")
     @GET
     @WebAction(path = "/index")
@@ -27,7 +28,16 @@ public class MainController {
             HttpServletRequest request) {
         System.out.println("----" + id + "----" + name + "----" + age);
         System.out.println("mian index");
-        return new AjaxRsult(true,"呵呵呵","json哦");
+
+        request.setAttribute("test", "测试request.setAttribute");
+        return new AjaxRsult(true, "呵呵呵", "json哦");
+    }
+
+    @OK("file")
+    @GET
+    @WebAction(path = "/dowload")
+    public File dowloadFile() {
+        return new File("D:/site-1.8.9.zip");
     }
 
 }

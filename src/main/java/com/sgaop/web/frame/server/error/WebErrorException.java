@@ -3,7 +3,7 @@ package com.sgaop.web.frame.server.error;
 /**
  * Created by 30695 on 2016/5/9 0009.
  */
-public class WebErrorException extends Exception{
+public class WebErrorException extends Exception {
 
     static final long serialVersionUID = -3387516993124229948L;
 

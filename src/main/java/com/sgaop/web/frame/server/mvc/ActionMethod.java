@@ -12,7 +12,7 @@ public class ActionMethod {
     private Method actionMethod;
     private String OK;
 
-    public ActionMethod(String method, String klass, Class<?> actionClass, Method actionMethod,String OK) {
+    public ActionMethod(String method, String klass, Class<?> actionClass, Method actionMethod, String OK) {
         this.method = method;
         this.klass = klass;
         this.actionClass = actionClass;

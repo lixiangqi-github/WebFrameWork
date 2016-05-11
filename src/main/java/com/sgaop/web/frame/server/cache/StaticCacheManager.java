@@ -1,16 +1,18 @@
 package com.sgaop.web.frame.server.cache;
 
 
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Properties;
 
-public class CacheManager {
+public class StaticCacheManager {
 
-    private static HashMap cacheMap = new HashMap();
+    private static HashMap staticCacheMap = new HashMap();
 
     /**
      * 单实例构造方法
      */
-    private CacheManager() {
+    private StaticCacheManager() {
         super();
     }
 
@@ -21,17 +23,7 @@ public class CacheManager {
      * @return
      */
     public synchronized static Object getCache(String key) {
-        return cacheMap.get(key);
-    }
-
-    /**
-     * 得到缓存。同步静态方法
-     *
-     * @param key
-     * @return
-     */
-    public static Object getCacheObj(String key) {
-        return cacheMap.get(key);
+        return staticCacheMap.get(key);
     }
 
     /**
@@ -41,8 +33,9 @@ public class CacheManager {
      * @return
      */
     public static String getCacheStr(String key) {
-        return cacheMap.get(key).toString();
+        return staticCacheMap.get(key).toString();
     }
+
 
     /**
      * 判断是否存在一个缓存
@@ -51,14 +44,14 @@ public class CacheManager {
      * @return
      */
     public synchronized static boolean hasCache(String key) {
-        return cacheMap.containsKey(key);
+        return staticCacheMap.containsKey(key);
     }
 
     /**
      * 清除所有缓存
      */
     public synchronized static void clearAll() {
-        cacheMap.clear();
+        staticCacheMap.clear();
     }
 
     /**
@@ -67,7 +60,7 @@ public class CacheManager {
      * @param key
      */
     public synchronized static void clearOnly(String key) {
-        cacheMap.remove(key);
+        staticCacheMap.remove(key);
     }
 
     /**
@@ -77,7 +70,20 @@ public class CacheManager {
      * @param obj
      */
     public synchronized static void putCache(String key, Object obj) {
-        cacheMap.put(key, obj);
+        staticCacheMap.put(key, obj);
+    }
+
+    /**
+     * 通过配置文件载入缓存
+     *
+     * @param properties
+     */
+    public synchronized static void putCache(Properties properties) {
+        Enumeration enu = properties.propertyNames();
+        while (enu.hasMoreElements()) {
+            String key = (String) enu.nextElement();
+            putCache(key, properties.get(key));
+        }
     }
 } 
  

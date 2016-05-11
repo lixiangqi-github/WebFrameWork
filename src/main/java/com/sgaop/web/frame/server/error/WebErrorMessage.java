@@ -8,6 +8,23 @@ public class WebErrorMessage {
     private int code;
     private String message;
 
+    private Exception exception;
+
+    public WebErrorMessage() {
+
+    }
+
+    public WebErrorMessage(int code, String message) {
+        this.message = message;
+        this.code = code;
+    }
+
+    public WebErrorMessage(int code, String message, Exception exception) {
+        this.code = code;
+        this.message = message;
+        this.exception = exception;
+    }
+
     public int getCode() {
         return code;
     }
@@ -22,5 +39,13 @@ public class WebErrorMessage {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Exception getException() {
+        return exception;
+    }
+
+    public void setException(Exception exception) {
+        this.exception = exception;
     }
 }
