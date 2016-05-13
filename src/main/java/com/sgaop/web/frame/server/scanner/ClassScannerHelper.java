@@ -1,5 +1,7 @@
 package com.sgaop.web.frame.server.scanner;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.util.jar.JarFile;
  * Created by 30695 on 2016/5/8 0008.
  */
 public class ClassScannerHelper {
+    private static final Logger log = Logger.getRootLogger();
 
     /**
      * 从包package中获取所有的Class
@@ -31,7 +34,12 @@ public class ClassScannerHelper {
         boolean recursive = true;
         // 获取包的名字 并进行替换
         String packageName = pack;
-        String packageDirName = packageName.replace('.', '/');
+        String packageDirName = "";
+        if (!packageName.equals("")) {
+            packageDirName = packageName.replace('.', '/');
+        } else {
+            packageDirName = "/";
+        }
         // 定义一个枚举的集合 并进行循环来处理这个目录下的things
         Enumeration<URL> dirs;
         try {
@@ -93,8 +101,7 @@ public class ClassScannerHelper {
                                                     .forName(packageName + '.'
                                                             + className));
                                         } catch (ClassNotFoundException e) {
-                                            // log
-                                            // .error("添加用户自定义视图类错误 找不到此类的.class文件");
+                                            log.error("添加用户自定义视图类错误 找不到此类的.class文件");
                                             e.printStackTrace();
                                         }
                                     }
@@ -102,7 +109,7 @@ public class ClassScannerHelper {
                             }
                         }
                     } catch (IOException e) {
-                        // log.error("在扫描用户定义视图时从jar包获取文件出错");
+                        log.error("在扫描用户定义视图时从jar包获取文件出错");
                         e.printStackTrace();
                     }
                 }
@@ -128,7 +135,7 @@ public class ClassScannerHelper {
         File dir = new File(packagePath);
         // 如果不存在或者 也不是目录就直接返回
         if (!dir.exists() || !dir.isDirectory()) {
-            // log.warn("用户定义包名 " + packageName + " 下没有任何文件");
+            log.warn("用户定义包名 " + packageName + " 下没有任何文件");
             return;
         }
         // 如果存在 就获取包下的所有文件 包括目录
@@ -143,9 +150,14 @@ public class ClassScannerHelper {
         for (File file : dirfiles) {
             // 如果是目录 则继续扫描
             if (file.isDirectory()) {
-                findAndAddClassesInPackageByFile(packageName + "."
-                                + file.getName(), file.getAbsolutePath(), recursive,
-                        classes);
+                if (packageName.equals("")) {
+                    findAndAddClassesInPackageByFile(file.getName(), file.getAbsolutePath(), recursive,
+                            classes);
+                } else {
+                    findAndAddClassesInPackageByFile(packageName + "."
+                                    + file.getName(), file.getAbsolutePath(), recursive,
+                            classes);
+                }
             } else {
                 // 如果是java类文件 去掉后面的.class 只留下类名
                 String className = file.getName().substring(0,
@@ -156,7 +168,7 @@ public class ClassScannerHelper {
                     //经过回复同学的提醒，这里用forName有一些不好，会触发static方法，没有使用classLoader的load干净
                     classes.add(Thread.currentThread().getContextClassLoader().loadClass(packageName + '.' + className));
                 } catch (ClassNotFoundException e) {
-                    // log.error("添加用户自定义视图类错误 找不到此类的.class文件");
+                    log.error("找不到此类的.class文件");
                     e.printStackTrace();
                 }
             }

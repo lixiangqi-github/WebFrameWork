@@ -3,6 +3,7 @@ package com.sgaop.web.frame.server.scanner;
 
 import com.sgaop.web.frame.server.cache.CacheManager;
 import com.sgaop.web.frame.server.cache.StaticCacheManager;
+import com.sgaop.web.frame.server.constant.Constant;
 import com.sgaop.web.frame.server.mvc.ActionMethod;
 import com.sgaop.web.frame.server.mvc.annotation.*;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 public class ClassScanner {
 
     public static void ScannerAllController() {
-        String baseScannerPackage = StaticCacheManager.getCache("baseScannerPackage").toString();
+        String baseScannerPackage = StaticCacheManager.getCache(Constant.BASE_SCANNER_PACKAGE).toString();
         Set<Class<?>> classes = ClassScannerHelper.getClasses(baseScannerPackage);
         for (Class<?> ks : classes) {
             String classKey = ks.getName();

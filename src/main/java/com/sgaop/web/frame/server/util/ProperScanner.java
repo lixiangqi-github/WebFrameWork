@@ -1,42 +1,34 @@
 package com.sgaop.web.frame.server.util;
 
 import com.sgaop.web.frame.server.cache.StaticCacheManager;
+import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
-/**
- * TODO 需要优化，批量扫描配置文件，全部加载到StaticCacheManager中
- */
+
 public class ProperScanner {
 
-    private static Properties props = new Properties();
+    private static final Logger logger = Logger.getRootLogger();
 
     public static void init() {
         InputStream in = null;
         try {
-            ClassLoader classLoader = ProperScanner.class.getClassLoader();
-            String path = String.valueOf(classLoader.getResource("/web.properties"));
-            File file = new File(path);
-            if (file.isFile()) {
+            String path = ProperScanner.class.getClassLoader().getResource("").getPath();
+            List<String> listPath = new ArrayList<String>();
+            ScannerProperties(path, listPath);
+            for (String filePath : listPath) {
+                File file = new File(filePath);
                 in = new FileInputStream(file);
+                Properties props = new Properties();
                 props.load(in);
-            } else {
-                try {
-                    path = ProperScanner.class.getResource("/web.properties").toURI().getPath();
-                    in = new FileInputStream(new File(path));
-                    props.load(in);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
+                StaticCacheManager.putCache(props);
             }
-            StaticCacheManager.putCache(props);
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("加载配置文件出错", e);
         } finally {
             if (in != null) {
                 try {
@@ -47,4 +39,25 @@ public class ProperScanner {
             }
         }
     }
+
+    private static void ScannerProperties(String path, List<String> listPath) {
+        File dir = new File(path);
+        if (!dir.exists() || !dir.isDirectory()) {
+            return;
+        }
+        File[] dirfiles = dir.listFiles(new FileFilter() {
+            public boolean accept(File file) {
+                return (file.isDirectory()) || (file.getName().endsWith(".properties"));
+            }
+        });
+        for (File file : dirfiles) {
+            if (file.isDirectory()) {
+                ScannerProperties(file.getAbsolutePath(), listPath);
+            } else {
+                listPath.add(file.getAbsolutePath());
+            }
+        }
+    }
+
+
 }

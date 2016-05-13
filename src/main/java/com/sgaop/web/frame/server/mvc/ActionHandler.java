@@ -3,6 +3,9 @@ package com.sgaop.web.frame.server.mvc;
 import com.sgaop.web.frame.server.cache.CacheManager;
 import com.sgaop.web.frame.server.error.WebErrorMessage;
 import com.sgaop.web.frame.server.mvc.annotation.WebParam;
+import com.sgaop.web.frame.server.util.ClassTool;
+import com.sgaop.web.frame.server.util.ParameterConverter;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +14,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by HuangChuan on 2016/5/9 0009.
@@ -35,6 +39,14 @@ public class ActionHandler {
 
                     List<Object> actionParamList = new ArrayList<Object>();
                     Annotation[][] annotations = handlerMethod.getParameterAnnotations();
+
+
+                    boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+
+                    Map<String, ?>  requestParameterMap = request.getParameterMap();
+                    if (isMultipart) {
+                        requestParameterMap = ParameterConverter.bulidMultipartMap(request);
+                    }
                     for (int i = 0; i < annotations.length; i++) {
                         Annotation[] annotation = annotations[i];
                         Class anClass = actionParamTypes[i];
@@ -42,37 +54,14 @@ public class ActionHandler {
                             for (Annotation anno : annotation) {
                                 if (anno instanceof WebParam) {
                                     String webParamKeyName = ((WebParam) anno).value();
-                                    Object ParamValuesObject = request.getParameterMap().get(webParamKeyName);
-                                    Object val = null;
-                                    if (ParamValuesObject == null) {
-                                        logger.debug("参数:" + webParamKeyName + " is null");
-                                        if (anClass.equals(String.class)) {
-                                            val = "";
-                                        } else if (anClass.equals(int.class) || anClass.equals(Integer.class) || anClass.equals(Long.class) || anClass.equals(long.class) || anClass.equals(double.class) || anClass.equals(Double.class) || anClass.equals(float.class) || anClass.equals(Float.class)) {
-                                            val = 0;
-                                        } else if (anClass.equals(String[].class)) {
-                                            val = (String[]) new String[]{};
-                                        } else if (anClass.equals(boolean.class) || anClass.equals(Boolean.class)) {
-                                            val = false;
-                                        }
+                                    if (webParamKeyName.startsWith(">>")) {
+                                        webParamKeyName = webParamKeyName.replace(">>", "");
+                                        actionParamList.add(ParameterConverter.bulid(anClass, webParamKeyName, requestParameterMap));
                                     } else {
-                                        if (anClass.equals(String.class)) {
-                                            val = ((String[]) ParamValuesObject)[0];
-                                        } else if (anClass.equals(int.class) || anClass.equals(Integer.class)) {
-                                            val = Integer.valueOf(((String[]) ParamValuesObject)[0]);
-                                        } else if (anClass.equals(Long.class) || anClass.equals(long.class)) {
-                                            val = Long.valueOf(((String[]) ParamValuesObject)[0]);
-                                        } else if (anClass.equals(String[].class)) {
-                                            val = (String[]) ParamValuesObject;
-                                        } else if (anClass.equals(double.class) || anClass.equals(Double.class)) {
-                                            val = Double.valueOf(((String[]) ParamValuesObject)[0]);
-                                        } else if (anClass.equals(float.class) || anClass.equals(Float.class)) {
-                                            val = Float.valueOf(((String[]) ParamValuesObject)[0]);
-                                        } else if (anClass.equals(boolean.class) || anClass.equals(Boolean.class)) {
-                                            val = Boolean.valueOf(((String[]) ParamValuesObject)[0]);
-                                        }
+                                        Object ParamValuesObject = requestParameterMap.get(webParamKeyName);
+                                        Object val = ClassTool.ParamCast(anClass, ParamValuesObject);
+                                        actionParamList.add(val);
                                     }
-                                    actionParamList.add(val);
                                 }
                             }
                         } else if (anClass.equals(HttpServletRequest.class)) {
@@ -96,14 +85,11 @@ public class ActionHandler {
         } catch (Exception e) {
             e.printStackTrace();
             webErrorMessage.setCode(500);
-            if (webErrorMessage.getMessage().equals("")) {
-                webErrorMessage.setMessage(" path error " + methodType + ":" + servletPath);
-            }
             webErrorMessage.setException(e);
             logger.warn(webErrorMessage.getMessage());
         }
         if (webErrorMessage.getCode() == 404) {
-            webErrorMessage.setMessage(" path is not found " + methodType + ":" + servletPath);
+            webErrorMessage.setMessage(" Not Found [" + methodType + "] URI=" + servletPath);
             logger.warn(webErrorMessage.getMessage());
         }
         actionResult.setWebErrorMessage(webErrorMessage);

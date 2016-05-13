@@ -61,13 +61,18 @@ public class FrameWebFilter implements Filter {
                             if (resultType.equals("json")) {
                                 error = false;
                                 ViewsRender.RenderJSON(response, actionResult.getResultData());
-                            } else if (resultType.startsWith("jsp:")) {
+                            } else if (resultType.startsWith("jsp:") || resultType.startsWith("fw:")) {
                                 error = false;
                                 String path[] = resultType.split(":");
                                 ViewsRender.RenderJSP("/WEB-INF/" + path[1], request, response);
                                 return;
-                            }
-                            if (resultType.startsWith("file")) {
+                            } else if (resultType.startsWith("rd:")) {
+                                error = false;
+                                String path[] = resultType.split(":");
+                                ViewsRender.RenderRedirect(request.getContextPath() + "/" + path[1], response);
+                                return;
+                            } else if (resultType.startsWith("file")) {
+                                error = false;
                                 ViewsRender.RenderFile(response, actionResult.getResultData());
                                 return;
                             } else {

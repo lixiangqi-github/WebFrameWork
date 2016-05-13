@@ -23,6 +23,17 @@ public class ViewsRender {
             request.getRequestDispatcher(jspPath).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("转发至["+jspPath+"]出错", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void RenderRedirect(String jspPath, HttpServletResponse response) {
+        try {
+            response.sendRedirect(jspPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("重定向至["+jspPath+"]出错", e);
             throw new RuntimeException(e);
         }
     }
@@ -38,6 +49,7 @@ public class ViewsRender {
             printWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("返回JSON数据出错", e);
             throw new RuntimeException(e);
         }
     }
@@ -75,7 +87,11 @@ public class ViewsRender {
 
     public static void RenderErrorPage(HttpServletResponse response, WebErrorMessage errorMessage) {
         try {
-            response.sendError(errorMessage.getCode(), errorMessage.getMessage());
+            if(errorMessage.getException()!=null){
+                response.sendError(errorMessage.getCode(), errorMessage.getException().getMessage());
+            }else{
+                response.sendError(errorMessage.getCode(), errorMessage.getMessage());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
