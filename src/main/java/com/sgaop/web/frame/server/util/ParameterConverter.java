@@ -14,6 +14,12 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.*;
 
+/**
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/13 0013
+ * To change this template use File | Settings | File Templates.
+ */
 public class ParameterConverter {
     private static final Logger log = Logger.getRootLogger();
 
@@ -101,7 +107,12 @@ public class ParameterConverter {
                 // 如果该FileItem不是表单域
                 if (!fileItem.isFormField()) {
                     String name = fileItem.getFieldName();
-                    req.put(name,new Object[]{IoTool.writeFile(fileItem.getInputStream(),fileItem.getName())} );
+                    String fileName = fileItem.getName();
+                    int lax = fileName.lastIndexOf("\\");
+                    if (lax > 0) {
+                        fileName = fileName.substring(lax + 1, fileName.length());
+                    }
+                    req.put(name, new Object[]{IoTool.writeFile(fileItem.getInputStream(), fileName)});
                 } else {
                     String name = fileItem.getFieldName();
                     String value = IoTool.InputStreamTOString(fileItem.getInputStream());

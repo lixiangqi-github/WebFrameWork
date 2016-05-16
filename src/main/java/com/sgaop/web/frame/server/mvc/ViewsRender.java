@@ -11,7 +11,10 @@ import java.io.*;
 import java.net.URLEncoder;
 
 /**
- * Created by HuangChuan on 2016/5/10 0010.
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/10 0010
+ * To change this template use File | Settings | File Templates.
  */
 public class ViewsRender {
 
@@ -23,7 +26,7 @@ public class ViewsRender {
             request.getRequestDispatcher(jspPath).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("转发至["+jspPath+"]出错", e);
+            logger.error("转发至[" + jspPath + "]出错", e);
             throw new RuntimeException(e);
         }
     }
@@ -33,7 +36,7 @@ public class ViewsRender {
             response.sendRedirect(jspPath);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("重定向至["+jspPath+"]出错", e);
+            logger.error("重定向至[" + jspPath + "]出错", e);
             throw new RuntimeException(e);
         }
     }
@@ -87,9 +90,9 @@ public class ViewsRender {
 
     public static void RenderErrorPage(HttpServletResponse response, WebErrorMessage errorMessage) {
         try {
-            if(errorMessage.getException()!=null){
+            if (errorMessage.getException() != null) {
                 response.sendError(errorMessage.getCode(), errorMessage.getException().getMessage());
-            }else{
+            } else {
                 response.sendError(errorMessage.getCode(), errorMessage.getMessage());
             }
         } catch (Exception e) {

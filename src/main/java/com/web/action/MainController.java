@@ -1,17 +1,22 @@
 package com.web.action;
 
 import com.google.gson.Gson;
-import com.sgaop.web.frame.server.mvc.Mvcs;
+import com.sgaop.web.frame.server.dao.DBConn;
 import com.sgaop.web.frame.server.mvc.annotation.*;
 import com.web.action.bean.TestbuildBean;
 import com.web.action.pojo.AjaxRsult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.sql.Connection;
+
 
 
 /**
- * Created by 30695 on 2016/5/8 0008.
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/8 0008
+ * To change this template use File | Settings | File Templates.
  */
 @WebController(path = "/mainController")
 public class MainController {
@@ -60,6 +65,8 @@ public class MainController {
     @WebAction(path = "/buildBean")
     public AjaxRsult buildBean(@WebParam(">>data") TestbuildBean bean) {
         System.out.println(new Gson().toJson(bean));
+        Connection connection=DBConn.getDbConn();
+        System.out.println(connection);
         return new AjaxRsult(true, "呵呵呵", bean);
     }
 

@@ -5,14 +5,16 @@ import com.sgaop.web.frame.server.constant.Constant;
 import java.io.*;
 
 /**
- * Created by HuangChuan on 2016/5/13 0013.
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/13 0013
+ * To change this template use File | Settings | File Templates.
  */
 public class IoTool {
 
 
     public static File writeFile(InputStream in, String fileName) throws IOException {
         String pathName = Constant.WEB_TEMP_PATH + "/" + fileName;
-        System.out.println(pathName);
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         byte[] data = new byte[Constant.BASE_BYTE];
         int count = -1;

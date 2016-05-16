@@ -10,8 +10,7 @@ package com.sgaop.web.frame.server.mvc.annotation;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE})
 @Documented
-public @interface WebController {
-    String path() default "";
+public @interface Setup {
 }

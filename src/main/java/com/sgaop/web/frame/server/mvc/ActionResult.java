@@ -3,7 +3,10 @@ package com.sgaop.web.frame.server.mvc;
 import com.sgaop.web.frame.server.error.WebErrorMessage;
 
 /**
- * Created by HuangChuan on 2016/5/10 0010.
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/10 0010
+ * To change this template use File | Settings | File Templates.
  */
 public class ActionResult {
     private WebErrorMessage webErrorMessage;

@@ -14,8 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
 /**
- * Created by 30695 on 2016/5/8 0008.
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/8 0008
+ * To change this template use File | Settings | File Templates.
  */
 @WebFilter("/*")
 public class FrameWebFilter implements Filter {
@@ -28,7 +32,6 @@ public class FrameWebFilter implements Filter {
     }
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException {
-
         try {
             servletRequest.setCharacterEncoding(Constant.utf8);
             servletResponse.setCharacterEncoding(Constant.utf8);

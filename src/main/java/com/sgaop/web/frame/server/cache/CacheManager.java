@@ -3,9 +3,15 @@ package com.sgaop.web.frame.server.cache;
 
 import java.util.HashMap;
 
+/**
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/4 0005
+ * To change this template use File | Settings | File Templates.
+ */
 public class CacheManager {
 
-    private static HashMap cacheMap = new HashMap();
+    private static HashMap cacheUrlClassMap = new HashMap();
 
     /**
      * 单实例构造方法
@@ -21,7 +27,7 @@ public class CacheManager {
      * @return
      */
     public synchronized static Object getCache(String key) {
-        return cacheMap.get(key);
+        return cacheUrlClassMap.get(key);
     }
 
     /**
@@ -31,7 +37,7 @@ public class CacheManager {
      * @return
      */
     public static Object getCacheObj(String key) {
-        return cacheMap.get(key);
+        return cacheUrlClassMap.get(key);
     }
 
     /**
@@ -41,8 +47,9 @@ public class CacheManager {
      * @return
      */
     public static String getCacheStr(String key) {
-        return cacheMap.get(key).toString();
+        return cacheUrlClassMap.get(key).toString();
     }
+
 
     /**
      * 判断是否存在一个缓存
@@ -51,14 +58,14 @@ public class CacheManager {
      * @return
      */
     public synchronized static boolean hasCache(String key) {
-        return cacheMap.containsKey(key);
+        return cacheUrlClassMap.containsKey(key);
     }
 
     /**
      * 清除所有缓存
      */
     public synchronized static void clearAll() {
-        cacheMap.clear();
+        cacheUrlClassMap.clear();
     }
 
     /**
@@ -67,7 +74,7 @@ public class CacheManager {
      * @param key
      */
     public synchronized static void clearOnly(String key) {
-        cacheMap.remove(key);
+        cacheUrlClassMap.remove(key);
     }
 
     /**
@@ -77,7 +84,7 @@ public class CacheManager {
      * @param obj
      */
     public synchronized static void putCache(String key, Object obj) {
-        cacheMap.put(key, obj);
+        cacheUrlClassMap.put(key, obj);
     }
 } 
  

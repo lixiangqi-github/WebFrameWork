@@ -11,16 +11,20 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 /**
- * Created by 30695 on 2016/5/8 0008.
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/8 0008
+ * To change this template use File | Settings | File Templates.
  */
 public class ClassScanner {
 
-    public static void ScannerAllController() {
+    public static void ScannerAllClass() {
         String baseScannerPackage = StaticCacheManager.getCache(Constant.BASE_SCANNER_PACKAGE).toString();
         Set<Class<?>> classes = ClassScannerHelper.getClasses(baseScannerPackage);
         for (Class<?> ks : classes) {
             String classKey = ks.getName();
             WebController webController = ks.getAnnotation(WebController.class);
+            Setup webInit = ks.getAnnotation(Setup.class);
             if (webController != null) {
                 Method[] methods = ks.getMethods();
                 for (Method method : methods) {
@@ -57,8 +61,16 @@ public class ClassScanner {
                         }
                     }
                 }
+            } else if (webInit != null) {
+                Method[] methods = ks.getMethods();
+                for (Method method : methods) {
+                    if ("init".equals(method.getName())) {
+                        CacheManager.putCache(Constant.WEB_SETUP_INIT, new ActionMethod("init", classKey, ks, method, ""));
+                    } else if ("destroy".equals(method.getName())) {
+                        CacheManager.putCache(Constant.WEB_SETUP_DESTROY, new ActionMethod("destroy", classKey, ks, method, ""));
+                    }
+                }
             }
         }
     }
-
 }

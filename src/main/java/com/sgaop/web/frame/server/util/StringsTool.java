@@ -3,16 +3,19 @@ package com.sgaop.web.frame.server.util;
 import java.util.regex.Pattern;
 
 /**
- * Created by HuangChuan on 2016/5/13 0013.
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/13 0013
+ * To change this template use File | Settings | File Templates.
  */
 public class StringsTool {
 
     /**
      * 判断是否为空串
-
+     *
      * @param str
-     * @return    true: null/""
-     *            false: 其它
+     * @return true: null/""
+     * false: 其它
      */
     public static boolean isNullorEmpty(String str) {
         if (str == null) {
@@ -27,7 +30,7 @@ public class StringsTool {
 
     /**
      * 处理空值的字符串
-
+     *
      * @param str
      * @return
      */
@@ -40,10 +43,9 @@ public class StringsTool {
 
     /**
      * 处理空值的字符串
-
-     * @param str             源字符串
-     * @param defaultStr      默认字符串
-
+     *
+     * @param str        源字符串
+     * @param defaultStr 默认字符串
      * @return
      */
     public static String empty2Default(String str,
@@ -57,7 +59,6 @@ public class StringsTool {
 
     /**
      * 判断是否是数字
-
      *
      * @param str
      * @return
@@ -71,7 +72,7 @@ public class StringsTool {
 
     /**
      * 判断是否是金额数字
-
+     *
      * @param str
      * @return
      */
@@ -84,7 +85,6 @@ public class StringsTool {
 
     /**
      * 判断是否是数字
-
      *
      * @param str
      * @return
@@ -98,7 +98,6 @@ public class StringsTool {
 
     /**
      * 判断是否是数字
-
      *
      * @param str
      * @return
@@ -112,7 +111,6 @@ public class StringsTool {
 
     /**
      * 判断是否符合帐务年月的格式
-
      *
      * @param str
      * @return
@@ -126,7 +124,7 @@ public class StringsTool {
 
     /**
      * 判断是否符合系统规定的日期格式
-
+     *
      * @param str
      * @return
      */
@@ -139,13 +137,14 @@ public class StringsTool {
         }
         if (str.length() == 10) {
             return Pattern.matches("\\d{4}-\\d{2}-\\d{2}", str);
-        }else {
+        } else {
             return Pattern.matches("\\d{4}-\\d{2}-\\d{2}\\s{1}\\d{2}:\\d{2}:\\d{2}", str);
         }
     }
+
     /**
      * 判断是否符合系统规定的日期格式
-
+     *
      * @param str
      * @return
      */
@@ -161,7 +160,7 @@ public class StringsTool {
 
     /**
      * 判断是否符合系统规定的日期格式
-
+     *
      * @param str
      * @return
      */

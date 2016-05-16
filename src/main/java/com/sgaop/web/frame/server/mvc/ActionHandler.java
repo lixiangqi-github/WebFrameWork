@@ -17,7 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by HuangChuan on 2016/5/9 0009.
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/9 0009
+ * To change this template use File | Settings | File Templates.
  */
 public class ActionHandler {
     private static final Logger logger = Logger.getRootLogger();
@@ -34,16 +37,11 @@ public class ActionHandler {
                     Class<?> actionClass = actionMethod.getActionClass();
                     Method handlerMethod = actionMethod.getActionMethod();
                     Object beanInstance = actionClass.newInstance();
-                    handlerMethod.setAccessible(true);
                     Class<?>[] actionParamTypes = actionMethod.getActionMethod().getParameterTypes();
-
                     List<Object> actionParamList = new ArrayList<Object>();
                     Annotation[][] annotations = handlerMethod.getParameterAnnotations();
-
-
                     boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-
-                    Map<String, ?>  requestParameterMap = request.getParameterMap();
+                    Map<String, ?> requestParameterMap = request.getParameterMap();
                     if (isMultipart) {
                         requestParameterMap = ParameterConverter.bulidMultipartMap(request);
                     }
@@ -86,7 +84,7 @@ public class ActionHandler {
             e.printStackTrace();
             webErrorMessage.setCode(500);
             webErrorMessage.setException(e);
-            logger.warn(webErrorMessage.getMessage());
+            logger.warn(e.getMessage());
         }
         if (webErrorMessage.getCode() == 404) {
             webErrorMessage.setMessage(" Not Found [" + methodType + "] URI=" + servletPath);

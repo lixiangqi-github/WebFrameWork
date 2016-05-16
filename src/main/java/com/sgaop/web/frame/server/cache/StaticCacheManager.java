@@ -5,6 +5,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
 
+/**
+ * Created by IntelliJ IDEA.
+ * User: 306955302@qq.com
+ * Date: 2016/5/4 0015
+ * To change this template use File | Settings | File Templates.
+ */
 public class StaticCacheManager {
 
     private static HashMap staticCacheMap = new HashMap();
@@ -36,6 +42,35 @@ public class StaticCacheManager {
         return staticCacheMap.get(key).toString();
     }
 
+    /**
+     * 得到缓存
+     *
+     * @param key
+     * @return
+     */
+    public static long getLongCache(String key) {
+        return Long.parseLong(staticCacheMap.get(key).toString());
+    }
+
+    /**
+     * 得到缓存
+     *
+     * @param key
+     * @return
+     */
+    public static int getIntCache(String key) {
+        return Integer.parseInt(staticCacheMap.get(key).toString());
+    }
+
+    /**
+     * 得到缓存
+     *
+     * @param key
+     * @return
+     */
+    public static boolean getBooleanCache(String key) {
+        return Boolean.parseBoolean(staticCacheMap.get(key).toString());
+    }
 
     /**
      * 判断是否存在一个缓存
