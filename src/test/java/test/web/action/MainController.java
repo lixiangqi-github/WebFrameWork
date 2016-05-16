@@ -1,10 +1,10 @@
-package com.web.action;
+package test.web.action;
 
 import com.google.gson.Gson;
 import com.sgaop.web.frame.server.dao.DBConn;
 import com.sgaop.web.frame.server.mvc.annotation.*;
-import com.web.action.bean.TestbuildBean;
-import com.web.action.pojo.AjaxRsult;
+import test.web.action.bean.TestbuildBean;
+import test.web.action.pojo.AjaxRsult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;

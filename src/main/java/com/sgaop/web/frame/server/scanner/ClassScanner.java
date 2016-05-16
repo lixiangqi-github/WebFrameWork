@@ -24,7 +24,7 @@ public class ClassScanner {
         for (Class<?> ks : classes) {
             String classKey = ks.getName();
             WebController webController = ks.getAnnotation(WebController.class);
-            Setup webInit = ks.getAnnotation(Setup.class);
+            Setup setup = ks.getAnnotation(Setup.class);
             if (webController != null) {
                 Method[] methods = ks.getMethods();
                 for (Method method : methods) {
@@ -61,7 +61,7 @@ public class ClassScanner {
                         }
                     }
                 }
-            } else if (webInit != null) {
+            } else if (setup != null) {
                 Method[] methods = ks.getMethods();
                 for (Method method : methods) {
                     if ("init".equals(method.getName())) {

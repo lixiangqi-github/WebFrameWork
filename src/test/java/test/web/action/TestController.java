@@ -1,4 +1,4 @@
-package com.web.action;
+package test.web.action;
 
 import com.sgaop.web.frame.server.mvc.annotation.WebAction;
 import com.sgaop.web.frame.server.mvc.annotation.WebController;

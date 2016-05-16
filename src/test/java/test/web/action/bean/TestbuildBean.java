@@ -1,4 +1,4 @@
-package com.web.action.bean;
+package test.web.action.bean;
 
 /**
  * Created by IntelliJ IDEA.

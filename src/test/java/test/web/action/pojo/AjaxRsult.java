@@ -1,4 +1,4 @@
-package com.web.action.pojo;
+package test.web.action.pojo;
 
 /**
  * Created by IntelliJ IDEA.
