@@ -4,7 +4,10 @@ import com.google.gson.Gson;
 import com.sgaop.web.frame.server.dao.DBConn;
 import com.sgaop.web.frame.server.mvc.annotation.*;
 import com.sgaop.web.frame.server.mvc.upload.TempFile;
+<<<<<<< HEAD
 import com.sgaop.web.frame.server.pojo.AjaxRsult;
+=======
+>>>>>>> 4761c94be6c077e5ec27119be4b3552fe6b13ebb
 import com.sgaop.web.frame.server.util.IoTool;
 import test.web.action.bean.TestbuildBean;
 
@@ -52,8 +55,13 @@ public class MainController {
 
     @OK("json")
     @POST
+<<<<<<< HEAD
     @Path("/buildBeanFile")
     public AjaxRsult buildBeanFile(@Parameter("data>>") TestbuildBean bean, @Parameter("docName")TempFile docName) {
+=======
+    @WebAction(path = "/buildBeanFile")
+    public AjaxRsult buildBeanFile(@WebParam(">>data") TestbuildBean bean,@WebParam("docName")TempFile docName) {
+>>>>>>> 4761c94be6c077e5ec27119be4b3552fe6b13ebb
         System.out.println(new Gson().toJson(bean));
         System.out.println(docName.getName());
         try {
@@ -66,8 +74,13 @@ public class MainController {
 
     @OK("json")
     @POST
+<<<<<<< HEAD
     @Path("/buildBeanFiles")
     public AjaxRsult buildBeanFiles(@Parameter("data>>") TestbuildBean bean, @Parameter("docName")TempFile[] docName) {
+=======
+    @WebAction(path = "/buildBeanFiles")
+    public AjaxRsult buildBeanFiles(@WebParam(">>data") TestbuildBean bean,@WebParam("docName")TempFile[] docName) {
+>>>>>>> 4761c94be6c077e5ec27119be4b3552fe6b13ebb
         System.out.println(new Gson().toJson(bean));
         for(TempFile file:docName){
             System.out.println(file.getName());

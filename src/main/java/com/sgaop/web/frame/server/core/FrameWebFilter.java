@@ -80,9 +80,12 @@ public class FrameWebFilter implements Filter {
                                 return;
                             }
                         }
+<<<<<<< HEAD
                     }else{
                         ViewsRender.RenderErrorPage(response, actionResult.getWebErrorMessage());
                         return;
+=======
+>>>>>>> 4761c94be6c077e5ec27119be4b3552fe6b13ebb
                     }
                 } else {
                     filterChain.doFilter(servletRequest, servletResponse);
