@@ -83,7 +83,6 @@ public class ViewsRender {
                 RenderErrorPage(response, new WebErrorMessage(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "返回的数据不是文件"));
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

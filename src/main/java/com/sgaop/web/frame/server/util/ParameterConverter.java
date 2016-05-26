@@ -1,5 +1,6 @@
 package com.sgaop.web.frame.server.util;
 
+import com.sgaop.web.frame.server.mvc.upload.TempFile;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -106,13 +107,27 @@ public class ParameterConverter {
                 FileItem fileItem = (FileItem) i.next();
                 // 如果该FileItem不是表单域
                 if (!fileItem.isFormField()) {
+                    String sessionid = "" + request.getSession().getId();
                     String name = fileItem.getFieldName();
                     String fileName = fileItem.getName();
                     int lax = fileName.lastIndexOf("\\");
                     if (lax > 0) {
                         fileName = fileName.substring(lax + 1, fileName.length());
                     }
-                    req.put(name, new Object[]{IoTool.writeFile(fileItem.getInputStream(), fileName)});
+                    TempFile tempFile = new TempFile(fileName, fileItem.getInputStream(), fileItem.getContentType());
+                    if (req.get(name) != null) {
+                        Object[] fileObjs = req.get(name);
+                        int len = fileObjs.length;
+                        TempFile[] files = new TempFile[len + 1];
+                        for (int fi = 0; fi < len; fi++) {
+                            TempFile file = (TempFile) fileObjs[fi];
+                            files[fi] = file;
+                        }
+                        files[len] = tempFile;
+                        req.put(name, files);
+                    } else {
+                        req.put(name, new Object[]{tempFile});
+                    }
                 } else {
                     String name = fileItem.getFieldName();
                     String value = IoTool.InputStreamTOString(fileItem.getInputStream());

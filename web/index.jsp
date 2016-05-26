@@ -18,6 +18,14 @@
     <input type="file" name="docName">
     <input type="submit" value="提交">
 </form>
+批量同名文件上传
+<form action="${base}/mainController/buildBeanFiles" method="POST" enctype="multipart/form-data">
+    <input type="text" name="data.name">
+    <input type="text" name="data.age">
+    <input type="file" name="docName">
+    <input type="file" name="docName">
+    <input type="submit" value="提交">
+</form>
 非文件上传
 <form action="${base}/mainController/buildBean" method="POST" >
     <input type="text" name="data.name">

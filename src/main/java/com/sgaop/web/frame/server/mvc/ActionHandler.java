@@ -2,7 +2,7 @@ package com.sgaop.web.frame.server.mvc;
 
 import com.sgaop.web.frame.server.cache.CacheManager;
 import com.sgaop.web.frame.server.error.WebErrorMessage;
-import com.sgaop.web.frame.server.mvc.annotation.WebParam;
+import com.sgaop.web.frame.server.mvc.annotation.Parameter;
 import com.sgaop.web.frame.server.util.ClassTool;
 import com.sgaop.web.frame.server.util.ParameterConverter;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -50,9 +50,9 @@ public class ActionHandler {
                         Class anClass = actionParamTypes[i];
                         if (annotation.length > 0) {
                             for (Annotation anno : annotation) {
-                                if (anno instanceof WebParam) {
-                                    String webParamKeyName = ((WebParam) anno).value();
-                                    if (webParamKeyName.startsWith(">>")) {
+                                if (anno instanceof Parameter) {
+                                    String webParamKeyName = ((Parameter) anno).value();
+                                    if (webParamKeyName.endsWith(">>")) {
                                         webParamKeyName = webParamKeyName.replace(">>", "");
                                         actionParamList.add(ParameterConverter.bulid(anClass, webParamKeyName, requestParameterMap));
                                     } else {

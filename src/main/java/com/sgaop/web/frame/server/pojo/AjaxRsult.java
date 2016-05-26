@@ -1,4 +1,4 @@
-package test.web.action.pojo;
+package com.sgaop.web.frame.server.pojo;
 
 /**
  * Created by IntelliJ IDEA.

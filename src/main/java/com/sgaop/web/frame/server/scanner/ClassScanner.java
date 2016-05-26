@@ -28,15 +28,15 @@ public class ClassScanner {
             if (webController != null) {
                 Method[] methods = ks.getMethods();
                 for (Method method : methods) {
-                    WebAction webAction = method.getAnnotation(WebAction.class);
+                    Path webAction = method.getAnnotation(Path.class);
                     OK ok = method.getAnnotation(OK.class);
                     String relPaht = "";
                     if (webAction != null) {
-                        if (webAction.path().length == 0) {
-                            relPaht = webController.path() + "/" + method.getName();
+                        if (webAction.value().length == 0) {
+                            relPaht = webController.value() + "/" + method.getName();
                         } else {
-                            for (String path : webAction.path()) {
-                                relPaht = webController.path() + path;
+                            for (String path : webAction.value()) {
+                                relPaht = webController.value() + path;
                             }
                         }
                         String okVal = "";
@@ -56,6 +56,7 @@ public class ClassScanner {
                             CacheManager.putCache(relPaht, new ActionMethod("PUT", classKey, ks, method, okVal));
                         }
                         GET get = method.getAnnotation(GET.class);
+                        //默认支持get访问
                         if (get != null || post == null && get == null && delete == null && put == null) {
                             CacheManager.putCache(relPaht, new ActionMethod("GET", classKey, ks, method, okVal));
                         }

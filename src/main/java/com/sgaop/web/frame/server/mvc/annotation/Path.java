@@ -12,11 +12,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 @Documented
-public @interface WebAction {
-
+public @interface Path {
     /**
      * 需要映射的路径,可以多个
      */
-    String[] path() default {};
-
+    String[] value() default {};
 }

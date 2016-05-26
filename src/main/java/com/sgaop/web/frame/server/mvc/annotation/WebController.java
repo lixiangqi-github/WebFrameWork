@@ -13,5 +13,5 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Documented
 public @interface WebController {
-    String path() default "";
+    String value();
 }

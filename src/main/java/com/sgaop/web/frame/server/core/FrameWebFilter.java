@@ -58,33 +58,29 @@ public class FrameWebFilter implements Filter {
                 if (!isStatic) {
                     ActionResult actionResult = ActionHandler.invokeAction(servletPath, reqMethod, request, response);
                     String resultType = actionResult.getResultType();
-                    boolean error = true;
                     if (actionResult.getWebErrorMessage().getCode() != 500 && actionResult.getWebErrorMessage().getCode() != 404) {
                         if (resultType != null) {
                             if (resultType.equals("json")) {
-                                error = false;
                                 ViewsRender.RenderJSON(response, actionResult.getResultData());
                             } else if (resultType.startsWith("jsp:") || resultType.startsWith("fw:")) {
-                                error = false;
                                 String path[] = resultType.split(":");
                                 ViewsRender.RenderJSP("/WEB-INF/" + path[1], request, response);
                                 return;
                             } else if (resultType.startsWith("rd:")) {
-                                error = false;
                                 String path[] = resultType.split(":");
                                 ViewsRender.RenderRedirect(request.getContextPath() + "/" + path[1], response);
                                 return;
                             } else if (resultType.startsWith("file")) {
-                                error = false;
                                 ViewsRender.RenderFile(response, actionResult.getResultData());
                                 return;
                             } else {
                                 actionResult.getWebErrorMessage().setMessage("没有设置返回类型 [" + servletPath + "]");
                                 logger.warn(actionResult.getWebErrorMessage().getMessage());
+                                ViewsRender.RenderErrorPage(response, actionResult.getWebErrorMessage());
+                                return;
                             }
                         }
-                    }
-                    if (error) {
+                    }else{
                         ViewsRender.RenderErrorPage(response, actionResult.getWebErrorMessage());
                         return;
                     }
@@ -93,7 +89,7 @@ public class FrameWebFilter implements Filter {
                     return;
                 }
             } else {
-                logger.error("没有设置静态WEB资源文件文件目录，可能会导致无法访问WEB资源文件");
+                logger.info("没有设置静态WEB资源文件文件目录，可能会导致无法访问WEB资源文件");
             }
         } catch (ServletException e) {
             e.printStackTrace();
