@@ -39,9 +39,9 @@ public class ClassScannerHelper {
         String packageName = pack;
         String packageDirName = "";
         if (!packageName.equals("")) {
-            packageDirName = packageName.replace('.', '/');
+            packageDirName = packageName.replace(".", File.separator);
         } else {
-            packageDirName = "/";
+            packageDirName = File.separator;
         }
         // 定义一个枚举的集合 并进行循环来处理这个目录下的things
         Enumeration<URL> dirs;

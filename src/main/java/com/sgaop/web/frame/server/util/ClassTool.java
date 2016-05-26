@@ -1,8 +1,8 @@
 package com.sgaop.web.frame.server.util;
 
+import com.sgaop.web.frame.server.mvc.upload.TempFile;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
@@ -52,8 +52,10 @@ public class ClassTool {
                 val = DateTool.parseSqlDate(String.valueOf(((Object[]) value)[0]));
             } else if (klazz.equals(Timestamp.class)) {
                 val = new Timestamp(DateTool.parseDate(String.valueOf(((Object[]) value)[0])).getTime());
-            } else if (klazz.equals(File.class)) {
+            } else if (klazz.equals(TempFile.class)) {
                 val = ((Object[]) value)[0];
+            } else if (klazz.equals(TempFile[].class)) {
+                val = value;
             } else {
                 log.warn("没有识别到的类型[" + klazz.getName() + "]");
                 throw new RuntimeException("没有识别到的类型[" + klazz.getName() + "]");
