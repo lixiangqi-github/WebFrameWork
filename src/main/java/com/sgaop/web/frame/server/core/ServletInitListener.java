@@ -44,7 +44,7 @@ public class ServletInitListener implements ServletContextListener {
     private void handlerSetup(String web_setup, ServletContextEvent servletContextEvent) {
         if (web_setup != null) {
             try {
-                ActionMethod actionMethod = (ActionMethod) CacheManager.getCacheObj(web_setup);
+                ActionMethod actionMethod = (ActionMethod) CacheManager.getUrlCache(web_setup);
                 if (actionMethod != null) {
                     Class<?> actionClass = actionMethod.getActionClass();
                     Method handlerMethod = actionMethod.getActionMethod();

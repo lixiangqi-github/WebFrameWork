@@ -10,8 +10,15 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class CacheManager {
+    /**
+     * MVC action相关类缓存
+     */
+    private volatile static HashMap cacheUrlClassMap = new HashMap();
 
-    private static HashMap cacheUrlClassMap = new HashMap();
+    /**
+     * DAO table相关类缓存
+     */
+    private volatile static HashMap cacheTableClassMap = new HashMap();
 
     /**
      * 单实例构造方法
@@ -21,60 +28,13 @@ public class CacheManager {
     }
 
     /**
-     * 得到缓存。同步静态方法
-     *
-     * @param key
-     * @return
-     */
-    public synchronized static Object getCache(String key) {
-        return cacheUrlClassMap.get(key);
-    }
-
-    /**
-     * 得到缓存。同步静态方法
-     *
-     * @param key
-     * @return
-     */
-    public static Object getCacheObj(String key) {
-        return cacheUrlClassMap.get(key);
-    }
-
-    /**
      * 得到缓存
      *
      * @param key
      * @return
      */
-    public static String getCacheStr(String key) {
-        return cacheUrlClassMap.get(key).toString();
-    }
-
-
-    /**
-     * 判断是否存在一个缓存
-     *
-     * @param key
-     * @return
-     */
-    public synchronized static boolean hasCache(String key) {
-        return cacheUrlClassMap.containsKey(key);
-    }
-
-    /**
-     * 清除所有缓存
-     */
-    public synchronized static void clearAll() {
-        cacheUrlClassMap.clear();
-    }
-
-    /**
-     * 清除指定的缓存
-     *
-     * @param key
-     */
-    public synchronized static void clearOnly(String key) {
-        cacheUrlClassMap.remove(key);
+    public static Object getUrlCache(String key) {
+        return cacheUrlClassMap.get(key);
     }
 
     /**
@@ -83,8 +43,27 @@ public class CacheManager {
      * @param key
      * @param obj
      */
-    public synchronized static void putCache(String key, Object obj) {
+    public  static void putUrlCache(String key, Object obj) {
         cacheUrlClassMap.put(key, obj);
+    }
+
+
+    /**
+     * 得到缓存
+     * @param key
+     * @return
+     */
+    public static Object getTableCache(String key) {
+        return cacheTableClassMap.get(key);
+    }
+
+    /**
+     * 载入缓存
+     * @param key
+     * @param obj
+     */
+    public  static void putTableCache(String key, Object obj) {
+        cacheTableClassMap.put(key, obj);
     }
 } 
  

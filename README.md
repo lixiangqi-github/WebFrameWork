@@ -1,23 +1,28 @@
-# WebFrameWork
-基于servlet与java注解的Web框架
+# **basis  MVC**
+- 基于servlet与java注解的Web MVC 框架
+- _**basis** 意思： n. 基础；底部；主要成分；基本原则或原理_
 
-## 基于Java注解和servlet3.0+实现通过注解方式访问的web框架
+
+## 基于Java注解和servlet3.0+实现通过注解方式访问的web MVC框架
 
 ### 已实现
-- 缓存扫描注解action
-- 参数自动绑定
-- javabean对象自动绑定
-- 文件批量上传并自动绑定(可上传大小为4G的单文件，更大的文件未进行测试)
+- 实现缓存扫描注解action
+- 实现参数自动绑定
+    - 参数与javabean自动绑定
+    - 文件上传自动绑定
+- 实现文件过滤器
+    - 文件后缀格式控制
+    - 文件上传大小限制
 - 实现视图控制器
-- jsp页面返回
-- json对象返回
-- 404、500页面
-- 文件下载处理
+    - jsp页面返回
+    - json对象返回
+    - 404、500页面
+    - 文件下载
 - jsp页面返回的处理优化
 - 添加@Setup 启动执行任务
-- 连接池实现
+- 绑定durid连接池
 
-### 待办工作
+### 正在添加中
 - 简易的orm功能
 - aop的实现
 - 暂未想到的功能.....
@@ -28,11 +33,12 @@
 @WebController("/mainController")
 public class MainController {
 
-    //    @OK("json")
-    @OK("jsp:testpage.jsp")
-// 或者这样   @OK("fw:testpage.jsp")
-    @GET
-    @Path
+  //@OK("rd:testpage.jsp")//重定向
+  //@OK("json")//返回JSON对象
+    @OK("jsp:testpage.jsp")//返回jsp页面
+  //@OK("fw:testpage.jsp")//转发
+    @GET//请求方式
+    @Path//默认使用方法名
     public AjaxRsult index(
             @Parameter("id") int id,
             @Parameter("name") String name,

@@ -1,11 +1,11 @@
 package com.sgaop.web.frame.server.util;
 
+import com.sgaop.web.frame.server.mvc.upload.FileUploadAdapter;
 import com.sgaop.web.frame.server.mvc.upload.TempFile;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
@@ -22,7 +22,6 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class ParameterConverter {
-    private static final Logger log = Logger.getRootLogger();
 
     public static <T> T bulid(Class<T> cls, String prefix, Map<String, ?> requestParameterMap) throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, ParseException {
         Object obj = cls.newInstance();
@@ -32,7 +31,8 @@ public class ParameterConverter {
             Class fieldType = field.getType();
             String fieldName = field.getName();
             String methodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            Object paramObj = requestParameterMap.get(prefix + "." + fieldName);
+            String fromName = prefix + "." + fieldName;
+            Object paramObj = requestParameterMap.get(fromName);
             if (paramObj == null) {
                 continue;
             }
@@ -61,9 +61,13 @@ public class ParameterConverter {
             } else if (fieldType.equals(Timestamp.class)) {
                 method = classDef.getMethod(methodName, Timestamp.class);
             }
-            Object objevalue = ClassTool.ParamCast(fieldType, paramObj);
-            if (objevalue != null) {
-                method.invoke(obj, new Object[]{objevalue});
+            try {
+                Object objevalue = ClassTool.ParamCast(fieldType, paramObj);
+                if (objevalue != null) {
+                    method.invoke(obj, new Object[]{objevalue});
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("参数" + fromName + "  (" + fieldType + ")转换错误： " + e.getMessage());
             }
         }
         return (T) obj;
@@ -103,30 +107,55 @@ public class ParameterConverter {
             FileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload upload = new ServletFileUpload(factory);
             List items = upload.parseRequest(request);
+            Map<String, Integer> isFiles = new HashMap<String, Integer>();
             for (Iterator i = items.iterator(); i.hasNext(); ) {
                 FileItem fileItem = (FileItem) i.next();
                 // 如果该FileItem不是表单域
                 if (!fileItem.isFormField()) {
-                    String sessionid = "" + request.getSession().getId();
                     String name = fileItem.getFieldName();
                     String fileName = fileItem.getName();
                     int lax = fileName.lastIndexOf("\\");
                     if (lax > 0) {
                         fileName = fileName.substring(lax + 1, fileName.length());
                     }
-                    TempFile tempFile = new TempFile(fileName, fileItem.getInputStream(), fileItem.getContentType());
-                    if (req.get(name) != null) {
-                        Object[] fileObjs = req.get(name);
-                        int len = fileObjs.length;
-                        TempFile[] files = new TempFile[len + 1];
-                        for (int fi = 0; fi < len; fi++) {
-                            TempFile file = (TempFile) fileObjs[fi];
-                            files[fi] = file;
-                        }
-                        files[len] = tempFile;
-                        req.put(name, files);
+                    boolean isNull = false;
+                    if ("".equals(fileName) && fileItem.getInputStream().available() == 0) {
+                        isNull = true;
+                    }
+                    if (isFiles.get(name) != null) {
+                        isFiles.put(name, (isFiles.get(name) + 1));
                     } else {
-                        req.put(name, new Object[]{tempFile});
+                        isFiles.put(name, 1);
+                    }
+                    TempFile tempFile = new TempFile(fileName, fileItem.getInputStream(), fileItem.getContentType());
+                    if (isNull) {
+                        if (req.get(name) == null || req.get(name).length > 0) {
+                            if (isFiles.get(name) > 1) {
+                                req.put(name, new TempFile[]{});
+                            } else {
+                                req.put(name, new Object[]{null});
+                            }
+                        }
+                    } else {
+                        FileUploadAdapter.checkFile(fileName, fileItem.getInputStream().available());
+                        //map中当前名称的文件个数不为空并且第一个文件不为null
+                        if (req.get(name) != null) {
+                            Object[] fileObjs = req.get(name);
+                            int len = 0;
+                            //如果第一个文件为空
+                            if (req.get(name)[0] != null) {
+                                len = fileObjs.length;
+                            }
+                            TempFile[] files = new TempFile[len + 1];
+                            for (int fi = 0; fi < len; fi++) {
+                                TempFile file = (TempFile) fileObjs[fi];
+                                files[fi] = file;
+                            }
+                            files[len] = tempFile;
+                            req.put(name, files);
+                        } else {
+                            req.put(name, new Object[]{tempFile});
+                        }
                     }
                 } else {
                     String name = fileItem.getFieldName();

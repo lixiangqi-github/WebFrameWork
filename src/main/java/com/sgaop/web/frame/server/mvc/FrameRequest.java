@@ -2,6 +2,7 @@ package com.sgaop.web.frame.server.mvc;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 
 /**
@@ -14,26 +15,26 @@ public class FrameRequest {
 
     private HttpServletRequest request;
     private HttpServletResponse response;
+    private Map<String, ?> reqMap;
 
 
-    public FrameRequest(HttpServletRequest request, HttpServletResponse response) {
+    public FrameRequest(HttpServletRequest request, HttpServletResponse response, Map<String, ?> reqMap) {
         this.request = request;
         this.response = response;
+        this.reqMap = reqMap;
     }
 
     public HttpServletRequest getRequest() {
         return request;
     }
 
-    public void setRequest(HttpServletRequest request) {
-        this.request = request;
-    }
-
     public HttpServletResponse getResponse() {
         return response;
     }
 
-    public void setResponse(HttpServletResponse response) {
-        this.response = response;
+    public Map<String, ?> getReqMap() {
+        return reqMap;
     }
+
+
 }

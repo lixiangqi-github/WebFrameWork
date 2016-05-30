@@ -36,4 +36,5 @@ public class ActionResult {
     public void setResultType(String resultType) {
         this.resultType = resultType;
     }
+
 }

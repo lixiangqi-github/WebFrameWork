@@ -1,6 +1,7 @@
 package test.web.action;
-import com.sgaop.web.frame.server.core.WebInit;
-import com.sgaop.web.frame.server.mvc.annotation.*;
+
+import com.sgaop.web.frame.server.core.WebSetup;
+import com.sgaop.web.frame.server.mvc.annotation.Setup;
 
 import javax.servlet.ServletContextEvent;
 
@@ -11,10 +12,9 @@ import javax.servlet.ServletContextEvent;
  * To change this template use File | Settings | File Templates.
  */
 @Setup
-public class WebInitImpl implements WebInit{
+public class WebSetupImpl implements WebSetup {
 
-    public void init(ServletContextEvent servletContextEvent)
-    {
+    public void init(ServletContextEvent servletContextEvent) {
         System.out.println("开启了哦");
     }
 

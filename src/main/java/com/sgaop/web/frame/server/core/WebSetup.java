@@ -9,7 +9,7 @@ import javax.servlet.ServletContextEvent;
  * Date: 2016/5/16 0016
  * To change this template use File | Settings | File Templates.
  */
-public interface WebInit {
+public interface WebSetup {
 
     void init(ServletContextEvent servletContextEvent);
 

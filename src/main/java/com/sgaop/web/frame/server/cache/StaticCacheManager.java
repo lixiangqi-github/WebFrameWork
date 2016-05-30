@@ -13,7 +13,7 @@ import java.util.Properties;
  */
 public class StaticCacheManager {
 
-    private static HashMap staticCacheMap = new HashMap();
+    private volatile static HashMap staticCacheMap = new HashMap();
 
     /**
      * 单实例构造方法
@@ -51,6 +51,7 @@ public class StaticCacheManager {
     public static long getLongCache(String key) {
         return Long.parseLong(staticCacheMap.get(key).toString());
     }
+
 
     /**
      * 得到缓存

@@ -99,4 +99,22 @@ public class ViewsRender {
             throw new RuntimeException(e);
         }
     }
+
+    public static void RenderErrorPage(HttpServletResponse response, Exception ex) {
+        try {
+            response.sendError(500, ex.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void RenderHttpStatus(HttpServletResponse response, int code, String msg) {
+        try {
+            response.sendError(code, msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 }

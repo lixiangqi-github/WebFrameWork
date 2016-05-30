@@ -11,7 +11,10 @@ public class WebErrorMessage {
 
     private int code;
     private String message;
-
+    /**
+     * 默认false
+     */
+    private boolean isJsp = false;
     private Exception exception;
 
     public WebErrorMessage() {
@@ -27,6 +30,14 @@ public class WebErrorMessage {
         this.code = code;
         this.message = message;
         this.exception = exception;
+    }
+
+    public boolean isJsp() {
+        return isJsp;
+    }
+
+    public void setJsp(boolean jsp) {
+        isJsp = jsp;
     }
 
     public int getCode() {

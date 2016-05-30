@@ -24,6 +24,9 @@ public class ProperScanner {
             String path = ProperScanner.class.getClassLoader().getResource("").getPath();
             List<String> listPath = new ArrayList<String>();
             ScannerProperties(path, listPath);
+            if(listPath.size()==0){
+                logger.debug("未发现任何配置文件");
+            }
             for (String filePath : listPath) {
                 File file = new File(filePath);
                 in = new FileInputStream(file);

@@ -13,25 +13,26 @@ public class TempFile {
 
     private String name;
 
+
     private InputStream InputStream;
 
     private String contentType;
+
 
     public TempFile(String name, InputStream InputStream, String contentType) {
         this.name = name;
         this.InputStream = InputStream;
         this.contentType = contentType;
+
     }
 
     public String getName() {
         return name;
     }
 
-
     public int getSize() throws IOException {
         return getInputStream().available();
     }
-
 
     public String getContentType() {
         return contentType;

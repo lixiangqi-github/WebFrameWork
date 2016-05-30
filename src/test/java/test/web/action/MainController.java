@@ -1,13 +1,10 @@
 package test.web.action;
 
 import com.google.gson.Gson;
-import com.sgaop.web.frame.server.dao.DBConn;
+import com.sgaop.web.frame.server.dao.DBConnPool;
 import com.sgaop.web.frame.server.mvc.annotation.*;
 import com.sgaop.web.frame.server.mvc.upload.TempFile;
-<<<<<<< HEAD
-import com.sgaop.web.frame.server.pojo.AjaxRsult;
-=======
->>>>>>> 4761c94be6c077e5ec27119be4b3552fe6b13ebb
+import com.sgaop.web.frame.server.pojo.AjaxResult;
 import com.sgaop.web.frame.server.util.IoTool;
 import test.web.action.bean.TestbuildBean;
 
@@ -15,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-
 
 
 /**
@@ -27,12 +23,13 @@ import java.sql.Connection;
 @WebController("/mainController")
 public class MainController {
 
-    //    @OK("json")
-    @OK("jsp:testpage.jsp")
-// 或者这样   @OK("fw:testpage.jsp")
-    @GET
-    @Path
-    public AjaxRsult index123(
+    //@OK("rd:testpage.jsp")//重定向
+    //@OK("json")//返回JSON对象
+    @OK("jsp:testpage.jsp")//返回jsp页面
+    //@OK("fw:testpage.jsp")//转发
+    @GET//请求方式
+    @Path//默认使用方法名
+    public AjaxResult index(
             @Parameter("id") int id,
             @Parameter("name") String name,
             @Parameter("age") int age,
@@ -43,7 +40,7 @@ public class MainController {
         System.out.println("----" + id + "----" + name + "----" + age);
         System.out.println("mian index");
         request.setAttribute("test", "测试request.setAttribute");
-        return new AjaxRsult(true, "呵呵呵", "json哦");
+        return new AjaxResult(true, "呵呵呵", "json哦");
     }
 
     @OK("rd:testpage.jsp")
@@ -55,49 +52,41 @@ public class MainController {
 
     @OK("json")
     @POST
-<<<<<<< HEAD
     @Path("/buildBeanFile")
-    public AjaxRsult buildBeanFile(@Parameter("data>>") TestbuildBean bean, @Parameter("docName")TempFile docName) {
-=======
-    @WebAction(path = "/buildBeanFile")
-    public AjaxRsult buildBeanFile(@WebParam(">>data") TestbuildBean bean,@WebParam("docName")TempFile docName) {
->>>>>>> 4761c94be6c077e5ec27119be4b3552fe6b13ebb
+    public AjaxResult buildBeanFile(@Parameter("data>>") TestbuildBean bean, @Parameter("docName") TempFile docName) {
         System.out.println(new Gson().toJson(bean));
-        System.out.println(docName.getName());
         try {
-            IoTool.writeFile(docName.getInputStream(),"d:\\"+docName.getName());
+            if(docName!=null){
+                System.out.println(docName.getName());
+                IoTool.writeFile(docName.getInputStream(), "d:\\temp\\" + docName.getName());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new AjaxRsult(true, "呵呵呵", bean);
+        return new AjaxResult(true, "呵呵呵", bean);
     }
 
     @OK("json")
     @POST
-<<<<<<< HEAD
     @Path("/buildBeanFiles")
-    public AjaxRsult buildBeanFiles(@Parameter("data>>") TestbuildBean bean, @Parameter("docName")TempFile[] docName) {
-=======
-    @WebAction(path = "/buildBeanFiles")
-    public AjaxRsult buildBeanFiles(@WebParam(">>data") TestbuildBean bean,@WebParam("docName")TempFile[] docName) {
->>>>>>> 4761c94be6c077e5ec27119be4b3552fe6b13ebb
+    public AjaxResult buildBeanFiles(@Parameter("data>>") TestbuildBean bean, @Parameter("docName") TempFile[] docName) {
         System.out.println(new Gson().toJson(bean));
-        for(TempFile file:docName){
+        for (TempFile file : docName) {
             System.out.println(file.getName());
             System.out.println(file.getContentType());
         }
-        return new AjaxRsult(true, "批量文件上传", bean);
+        return new AjaxResult(true, "批量文件上传", bean);
     }
 
 
     @OK("json")
     @POST
     @Path("/buildBean")
-    public AjaxRsult buildBean(@Parameter("data>>") TestbuildBean bean) {
+    public AjaxResult buildBean(@Parameter("data>>") TestbuildBean bean) {
         System.out.println(new Gson().toJson(bean));
-        Connection connection=DBConn.getDbConn();
+        Connection connection = DBConnPool.getDbConn();
         System.out.println(connection);
-        return new AjaxRsult(true, "呵呵呵", bean);
+        return new AjaxResult(true, "呵呵呵", bean);
     }
 
 
@@ -105,7 +94,7 @@ public class MainController {
     @GET
     @Path("/dowload")
     public File dowloadFile() {
-        return new File("D:/site-1.8.9.zip");
+        return new File("D:\\TEMP\\模版说明.docx");
     }
-
 }
+

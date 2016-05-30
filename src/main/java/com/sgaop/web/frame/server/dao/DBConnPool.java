@@ -13,7 +13,8 @@ import java.sql.SQLException;
  * Date: 2016/5/4 0004
  * To change this template use File | Settings | File Templates.
  */
-public class DBConn {
+public class DBConnPool {
+
     private static final Logger logger = Logger.getRootLogger();
 
     private static Connection connection;
@@ -40,7 +41,6 @@ public class DBConn {
     }
 
     private static Connection getDbConnection() {
-
         try {
             dataSource.setPassword(StaticCacheManager.getCacheStr("db.password"));
             dataSource.setUsername(StaticCacheManager.getCacheStr("db.user"));
