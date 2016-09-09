@@ -64,7 +64,7 @@ public class ActionHandler {
                             actionParamList.add(response);
                         } else {
                             webErrorMessage.setCode(500);
-                            webErrorMessage.setMessage("Action的参数,除HttpServletRequest,HttpServletResponse外必须使用@"+Parameter.class+"注解");
+                            webErrorMessage.setMessage("Action的参数,除HttpServletRequest,HttpServletResponse外必须使用@" + Parameter.class + "注解");
                             logger.warn(webErrorMessage.getMessage());
                         }
                     }
@@ -73,12 +73,12 @@ public class ActionHandler {
                 } else {
                     webErrorMessage.setCode(404);
                 }
-            }else if (servletPath.endsWith(Constant.PAGE_SUFFIX)) {
+            } else if (servletPath.endsWith(Constant.PAGE_SUFFIX)) {
                 /**
                  * 在没有找到注解的情况下，并且访问的是jsp文件
                  */
                 webErrorMessage.setJsp(true);
-            }else {
+            } else {
                 webErrorMessage.setCode(404);
             }
         } catch (Exception e) {

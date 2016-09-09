@@ -6,7 +6,8 @@ import com.sgaop.web.frame.server.error.ConstanErrorMsg;
 import com.sgaop.web.frame.server.mvc.ActionHandler;
 import com.sgaop.web.frame.server.mvc.ActionResult;
 import com.sgaop.web.frame.server.mvc.Mvcs;
-import com.sgaop.web.frame.server.mvc.ViewsRender;
+import com.sgaop.web.frame.server.mvc.view.DefaultViewsRender;
+import com.sgaop.web.frame.server.mvc.view.ViewsRegister;
 import com.sgaop.web.frame.server.util.ParameterConverter;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 
@@ -64,7 +66,7 @@ public class FrameWebFilter implements Filter {
                  */
                 if (isStatic && servletPath.endsWith(Constant.PAGE_SUFFIX)) {
                     logger.warn("安全警告：不允许访问静态目录中的" + Constant.PAGE_SUFFIX + "文件");
-                    ViewsRender.RenderHttpStatus(response, 403, ConstanErrorMsg.ILLEGAL_OPERATION);
+                    DefaultViewsRender.RenderHttpStatus(response, 403, ConstanErrorMsg.ILLEGAL_OPERATION);
                     return;
                 } else if (!isStatic) {
                     /**
@@ -73,27 +75,34 @@ public class FrameWebFilter implements Filter {
                     ActionResult actionResult = ActionHandler.invokeAction(servletPath, reqMethod, request, response);
                     String resultType = actionResult.getResultType();
                     if (actionResult.getWebErrorMessage().getCode() == 200 && actionResult.getWebErrorMessage().isJsp()) {
-                        ViewsRender.RenderJSP(servletPath, request, response);
+                        DefaultViewsRender.RenderJSP(servletPath, request, response);
                         return;
                     } else if (actionResult.getWebErrorMessage().getCode() != 500 && actionResult.getWebErrorMessage().getCode() != 404) {
                         if (resultType != null) {
-                            if (resultType.equals("json")) {
-                                ViewsRender.RenderJSON(response, actionResult.getResultData());
+                            if (ViewsRegister.hasRegisterView(resultType)) {
+                                String path[] = resultType.split(":");
+                                Class<?> klass = ViewsRegister.getViewClass(path[0]);
+                                Object view = klass.newInstance();
+                                Method method = klass.getMethod("render", String.class, HttpServletRequest.class, HttpServletResponse.class, Object.class);
+                                method.invoke(view, path[1], request, response, actionResult.getResultData());
+                                return;
+                            } else if (resultType.equals("json")) {
+                                DefaultViewsRender.RenderJSON(response, actionResult.getResultData());
                             } else if (resultType.startsWith("jsp:") || resultType.startsWith("fw:")) {
                                 String path[] = resultType.split(":");
-                                ViewsRender.RenderJSP(Constant.JSP_PATH + path[1], request, response);
+                                DefaultViewsRender.RenderJSP(Constant.JSP_PATH + path[1], request, response);
                                 return;
                             } else if (resultType.startsWith("rd:")) {
                                 String path[] = resultType.split(":");
-                                ViewsRender.RenderRedirect(request.getContextPath() + "/" + path[1], response);
+                                DefaultViewsRender.RenderRedirect(request.getContextPath() + "/" + path[1], response);
                                 return;
                             } else if (resultType.startsWith("file")) {
-                                ViewsRender.RenderFile(response, actionResult.getResultData());
+                                DefaultViewsRender.RenderFile(response, actionResult.getResultData());
                                 return;
                             } else {
                                 actionResult.getWebErrorMessage().setMessage("没有设置返回类型 [" + servletPath + "]");
                                 logger.error(actionResult.getWebErrorMessage().getMessage());
-                                ViewsRender.RenderErrorPage(response, actionResult.getWebErrorMessage());
+                                DefaultViewsRender.RenderErrorPage(response, actionResult.getWebErrorMessage());
                                 return;
                             }
                         }
@@ -101,7 +110,7 @@ public class FrameWebFilter implements Filter {
                         /**
                          * 在以上条件都不满足的情况下进入错误页面
                          */
-                        ViewsRender.RenderErrorPage(response, actionResult.getWebErrorMessage());
+                        DefaultViewsRender.RenderErrorPage(response, actionResult.getWebErrorMessage());
                         return;
                     }
                 } else {
@@ -116,7 +125,7 @@ public class FrameWebFilter implements Filter {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ViewsRender.RenderErrorPage(response, e);
+            DefaultViewsRender.RenderErrorPage(response, e);
         }
     }
 

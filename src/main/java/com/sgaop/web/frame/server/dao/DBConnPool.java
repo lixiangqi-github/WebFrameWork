@@ -17,12 +17,11 @@ public class DBConnPool {
 
     private static final Logger logger = Logger.getRootLogger();
 
-    private static Connection connection;
 
     private static DruidDataSource dataSource = new DruidDataSource();
 
     static {
-        getDbConnection();
+        init();
     }
 
     public static DruidDataSource getDataSource() {
@@ -31,16 +30,15 @@ public class DBConnPool {
 
     public static Connection getDbConn() {
         try {
-            if (connection == null) {
-                connection = getDbConnection();
-            }
+            return dataSource.getConnection();
         } catch (Exception e) {
+            logger.debug("获取连接失败", e);
             e.printStackTrace();
         }
-        return connection;
+        return null;
     }
 
-    private static Connection getDbConnection() {
+    private static void init() {
         try {
             dataSource.setPassword(StaticCacheManager.getCacheStr("db.password"));
             dataSource.setUsername(StaticCacheManager.getCacheStr("db.user"));
@@ -59,12 +57,10 @@ public class DBConnPool {
             dataSource.setTestOnReturn(StaticCacheManager.getBooleanCache("db.testOnReturn"));
             dataSource.setPoolPreparedStatements(StaticCacheManager.getBooleanCache("db.poolPreparedStatements"));
             dataSource.init();
-            connection = dataSource.getConnection();
             logger.debug("数据库连接成功");
         } catch (SQLException e) {
             e.printStackTrace();
             logger.debug("数据库连接失败", e);
         }
-        return connection;
     }
 }

@@ -1,6 +1,8 @@
 package com.sgaop.web.frame.server.dao;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,10 +30,10 @@ public class TableInfo {
     /**
      * 实体类字段与表列的关系
      */
-    private LinkedHashMap<String,TableFiled> daoFileds = new LinkedHashMap<String, TableFiled>();
+    private LinkedHashMap<String, TableFiled> daoFileds = new LinkedHashMap<String, TableFiled>();
 
 
-    public void addDaoFiled(String colums,TableFiled tableFiled) {
+    public void addDaoFiled(String colums, TableFiled tableFiled) {
         daoFileds.put(colums, tableFiled);
     }
 
@@ -59,6 +61,7 @@ public class TableInfo {
     public List<String> getColums() {
         return colums;
     }
+
     public String getColum() {
         String columsStr = "";
         for (String colum : colums) {

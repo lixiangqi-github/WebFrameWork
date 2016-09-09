@@ -20,7 +20,6 @@ public class Constant {
 
     public static final String PAGE_SUFFIX = ".jsp";
 
-    public static final String BASE_SCANNER_PACKAGE = "baseScannerPackage";
 
     public static final Pattern ATTACH_PATTERN = Pattern.compile(StaticCacheManager.getCacheStr("attach.suffixReg"));
 

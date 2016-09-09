@@ -1,4 +1,4 @@
-package com.sgaop.web.frame.server.mvc;
+package com.sgaop.web.frame.server.mvc.view;
 
 import com.google.gson.Gson;
 import com.sgaop.web.frame.server.constant.Constant;
@@ -15,8 +15,9 @@ import java.net.URLEncoder;
  * User: 306955302@qq.com
  * Date: 2016/5/10 0010
  * To change this template use File | Settings | File Templates.
+ * 默认视图
  */
-public class ViewsRender {
+public class DefaultViewsRender {
 
     private static final Logger logger = Logger.getRootLogger();
 

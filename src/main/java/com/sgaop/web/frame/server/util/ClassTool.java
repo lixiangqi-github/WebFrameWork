@@ -117,9 +117,9 @@ public class ClassTool {
      * @return
      */
     public static String getMethodName(String methodName, Class clss) {
-        if(clss == boolean.class){
+        if (clss == boolean.class) {
             return "is" + methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
-        }else{
+        } else {
             return "get" + methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
         }
     }
@@ -132,7 +132,7 @@ public class ClassTool {
      * @param pojo
      * @param value
      */
-    public static void invokeMethod(Field field,String methodName, Class clss, Object pojo, Object value) {
+    public static void invokeMethod(Field field, String methodName, Class clss, Object pojo, Object value) {
         if (value == null) {
             return;
         }
@@ -152,17 +152,18 @@ public class ClassTool {
 
     /**
      * 执行一个方法,取得值
+     *
      * @param clss
      * @param pojo
      * @param methodName
      * @return
      */
     public static Object invokeGetMethod(Class clss, Object pojo, String methodName) {
-        Object value=null;
+        Object value = null;
         try {
             Method method = clss.getMethod(methodName);
             method.setAccessible(true);
-            value=method.invoke(pojo);
+            value = method.invoke(pojo);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

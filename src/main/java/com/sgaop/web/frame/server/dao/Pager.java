@@ -1,7 +1,5 @@
 package com.sgaop.web.frame.server.dao;
 
-import com.google.gson.Gson;
-
 /**
  * Created by IntelliJ IDEA.
  * User: 306955302@qq.com
@@ -18,7 +16,7 @@ public class Pager {
     /**
      * 每页条数
      */
-    private  int pageSize=0;
+    private int pageSize = 0;
 
     /**
      * 起始数
@@ -49,7 +47,7 @@ public class Pager {
         if (pageSize == 0) {
             pageSize = def_pageSize;
         }
-        this.pageSize=pageSize;
+        this.pageSize = pageSize;
         if (pageNumber == 0 || pageNumber == 1) {
             this.pageStart = 0;
             this.pageEnd = pageSize;

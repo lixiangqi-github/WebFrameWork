@@ -38,4 +38,33 @@ public class Mvcs {
     public static Map<String, ?> getReqMap() {
         return local.get().getReqMap();
     }
+
+
+    static class FrameRequest {
+
+        private HttpServletRequest request;
+        private HttpServletResponse response;
+        private Map<String, ?> reqMap;
+
+
+        public FrameRequest(HttpServletRequest request, HttpServletResponse response, Map<String, ?> reqMap) {
+            this.request = request;
+            this.response = response;
+            this.reqMap = reqMap;
+        }
+
+        public HttpServletRequest getRequest() {
+            return request;
+        }
+
+        public HttpServletResponse getResponse() {
+            return response;
+        }
+
+        public Map<String, ?> getReqMap() {
+            return reqMap;
+        }
+
+
+    }
 }

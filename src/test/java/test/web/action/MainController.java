@@ -2,9 +2,10 @@ package test.web.action;
 
 import com.google.gson.Gson;
 import com.sgaop.web.frame.server.dao.DBConnPool;
+import com.sgaop.web.frame.server.mvc.Mvcs;
 import com.sgaop.web.frame.server.mvc.annotation.*;
 import com.sgaop.web.frame.server.mvc.upload.TempFile;
-import com.sgaop.web.frame.server.pojo.AjaxResult;
+import com.sgaop.web.frame.server.mvc.AjaxResult;
 import com.sgaop.web.frame.server.util.IoTool;
 import test.web.action.bean.TestbuildBean;
 
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -37,6 +40,7 @@ public class MainController {
             @Parameter("flag") boolean flag,
             @Parameter("ids") String[] ids,
             HttpServletRequest request) {
+        System.out.println(Mvcs.getReqMap().get("name").toString());
         System.out.println("----" + id + "----" + name + "----" + age);
         System.out.println("mian index");
         request.setAttribute("test", "测试request.setAttribute");
@@ -50,13 +54,25 @@ public class MainController {
         System.out.println("---testpage");
     }
 
+
+    @OK("freemarker:TestFreeMarker.ftl")
+    @GET
+    @Path("/freemarker")
+    public Map freemarkerTest() {
+        System.out.println("---freemarkerTest");
+        Map data1 = new HashMap();
+        data1.put("name", "张三");
+        data1.put("age", 11);
+        return data1;
+    }
+
     @OK("json")
     @POST
     @Path("/buildBeanFile")
     public AjaxResult buildBeanFile(@Parameter("data>>") TestbuildBean bean, @Parameter("docName") TempFile docName) {
         System.out.println(new Gson().toJson(bean));
         try {
-            if(docName!=null){
+            if (docName != null) {
                 System.out.println(docName.getName());
                 IoTool.writeFile(docName.getInputStream(), "d:\\temp\\" + docName.getName());
             }

@@ -16,5 +16,8 @@ public class TestPager {
         System.out.println("3:"+new Gson().toJson(new Pager(3,5)));
         System.out.println("4:"+new Gson().toJson(new Pager(4,5)));
         System.out.println("5:"+new Gson().toJson(new Pager(5,5)));
+
+        System.out.println(System.getProperties().getProperty("os.name"));
+
     }
 }

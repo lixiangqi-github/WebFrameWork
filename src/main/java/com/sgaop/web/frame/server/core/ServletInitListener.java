@@ -4,6 +4,7 @@ package com.sgaop.web.frame.server.core;
 import com.sgaop.web.frame.server.cache.CacheManager;
 import com.sgaop.web.frame.server.constant.Constant;
 import com.sgaop.web.frame.server.mvc.ActionMethod;
+import com.sgaop.web.frame.server.mvc.view.ViewsRegister;
 import com.sgaop.web.frame.server.scanner.ClassScanner;
 import com.sgaop.web.frame.server.scanner.ProperScanner;
 import org.apache.log4j.Logger;
@@ -30,13 +31,13 @@ public class ServletInitListener implements ServletContextListener {
         ProperScanner.init();
         //扫描关键注解
         ClassScanner.ScannerAllClass();
-        logger.info("服务启动");
+        //注册默认视图
+        ViewsRegister.RegisterDefaultView();
         //执行自定义启动类
         handlerSetup(Constant.WEB_SETUP_INIT, servletContextEvent);
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        logger.info("服务销毁");
         //执行自定义销毁类
         handlerSetup(Constant.WEB_SETUP_DESTROY, servletContextEvent);
     }

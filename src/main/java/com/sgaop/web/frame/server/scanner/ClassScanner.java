@@ -26,8 +26,7 @@ import java.util.Set;
 public class ClassScanner {
 
     public static void ScannerAllClass() {
-        String baseScannerPackage = StaticCacheManager.getCache(Constant.BASE_SCANNER_PACKAGE).toString();
-        Set<Class<?>> classes = ClassScannerHelper.getClasses(baseScannerPackage);
+        Set<Class<?>> classes = ClassScannerHelper.getClasses("");
         for (Class<?> ks : classes) {
             String classKey = ks.getName();
             WebController webController = ks.getAnnotation(WebController.class);

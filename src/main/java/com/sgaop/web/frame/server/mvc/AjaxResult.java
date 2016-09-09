@@ -1,4 +1,4 @@
-package com.sgaop.web.frame.server.pojo;
+package com.sgaop.web.frame.server.mvc;
 
 /**
  * Created by IntelliJ IDEA.

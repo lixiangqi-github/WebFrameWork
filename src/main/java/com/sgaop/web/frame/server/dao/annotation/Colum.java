@@ -15,6 +15,7 @@ import java.lang.annotation.*;
 public @interface Colum {
     /**
      * 字段名称
+     *
      * @return
      */
     String value() default "";

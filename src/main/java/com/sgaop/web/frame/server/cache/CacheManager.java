@@ -43,13 +43,14 @@ public class CacheManager {
      * @param key
      * @param obj
      */
-    public  static void putUrlCache(String key, Object obj) {
+    public static void putUrlCache(String key, Object obj) {
         cacheUrlClassMap.put(key, obj);
     }
 
 
     /**
      * 得到缓存
+     *
      * @param key
      * @return
      */
@@ -59,10 +60,11 @@ public class CacheManager {
 
     /**
      * 载入缓存
+     *
      * @param key
      * @param obj
      */
-    public  static void putTableCache(String key, Object obj) {
+    public static void putTableCache(String key, Object obj) {
         cacheTableClassMap.put(key, obj);
     }
 } 
